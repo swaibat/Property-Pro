@@ -72,12 +72,27 @@ describe('User Signin', () => {
       });
   });
 
-  it('check for wrong details', (done) => {
+  it('check for wrong email', (done) => {
     request(app)
       .post('/api/v1/users/auth/signin')
       .send({
-        email: 'b@gmail.com',
-        password: 'anderson',
+        email: 'testss@gmail.com',
+        password: 'kanyanyama01',
+      })
+      .set('Accept', 'application/json')
+      .end((err, res) => {
+        res.status.should.equal(401);
+        res.body.message.should.equal('wrong username or password');
+        done();
+      });
+  });
+
+  it('check for wrong Password', (done) => {
+    request(app)
+      .post('/api/v1/users/auth/signin')
+      .send({
+        email: 'testme@gmail.com',
+        password: 'kanyanyama01s',
       })
       .set('Accept', 'application/json')
       .end((err, res) => {
@@ -182,6 +197,57 @@ describe('Test patch method', () => {
       .end((err, res) => {
         res.status.should.equal(404);
         res.body.message.should.equal('property with given id not found');
+        done();
+      });
+  });
+  it('check if propert exists', (done) => {
+    request(app)
+      .delete('/api/v1/property/12')
+      .set('Accept', 'application/json')
+      .end((err, res) => {
+        res.status.should.equal(404);
+        res.body.message.should.equal('property with given id not found');
+        done();
+      });
+  });
+  it('view all property', (done) => {
+    request(app)
+      .get('/api/v1/property')
+      .set('Accept', 'application/json')
+      .end((err, res) => {
+        res.status.should.equal(200);
+        res.body.status.should.equal('success');
+        done();
+      });
+  });
+  it('check if propert exists', (done) => {
+    request(app)
+      .get('/api/v1/property/12')
+      .set('Accept', 'application/json')
+      .end((err, res) => {
+        res.status.should.equal(404);
+        res.body.message.should.equal('property with given id not found');
+        done();
+      });
+  });
+  it('view specific property', (done) => {
+    request(app)
+      .get('/api/v1/property/1')
+      .set('Accept', 'application/json')
+      .end((err, res) => {
+        res.status.should.equal(200);
+        res.body.status.should.equal('success');
+        done();
+      });
+  });
+  it('deletes property', (done) => {
+    request(app)
+      .delete('/api/v1/property/1')
+      .set('Accept', 'application/json')
+      .end((err, res) => {
+        res.status.should.equal(200);
+        res.body.status.should.equal('success');
+        res.body.message.should.equal('property deleted successfully');
         done();
       });
   });

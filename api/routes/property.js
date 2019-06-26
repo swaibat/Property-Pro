@@ -4,6 +4,7 @@ import express from 'express';
 import { PropertyController } from '../controller/propertyController';
 // eslint-disable-next-line import/named
 import { adsInputValidate } from '../helpers/validator';
+// import { queryType } from '../midleware/property';
 
 
 const router = express.Router();
@@ -13,10 +14,19 @@ const property = new PropertyController();
 // create property
 router.post('/', adsInputValidate, property.postProperty);
 
-// create property
+// update property
 router.put('/:Id', property.updateProperty);
 
-// create property
+// mark property as sold
 router.patch('/:Id/sold', property.markSold);
+
+// delete property
+router.delete('/:Id', property.deleteProperty);
+
+// view all propertys
+router.get('/', property.getAllProperty);
+
+// delete property
+router.get('/:Id', property.getPropertyById);
 
 export default router;
